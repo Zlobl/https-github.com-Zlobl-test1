@@ -29,10 +29,39 @@ theme: /
 
     state: PriceTO
         intent!: /priceTo
-        a: Стоимость обслуживания можно рассчитать (тут)[http://someautodealer/techservice#calculate]
+        a: Стоимость обслуживания можно рассчитать [тут](http://someautodealer/techservice#calculate)
 
+    state: ScheduleTO
+        intent!: /scheduleTo
+        a: График технического обслуживания можно узнать [тут](http://someautodealer/techservice).    
         
-        
+    state: СlaimTO
+        intent!: /claimTo
+        a: [Позвоните моим коллегам](http://someautodealer/contacts), чтобы разобраться в ситуации.
+ 
+    state: WhatTO
+        intent!: /whatTo
+        a: Техническое обслуживание нужно, чтобы предотвратить вероятность случайных поломок, а также произвести регулировку всех основных узлов и агрегатов, чтобы максимально снизить расход топлива и смазочных материалов.
+        go!: /SignUpTo
+
+    
+    state: SignUpTo
+        intent!: /signUpTo
+        if: ($session.phone && $session.name) || ($session.phone && $session.car)
+            a: Оформляю заявку на техобслуживание на следующие данные:
+            a: {{$session.name}}\n{{$session.phone}}\n{{$session.car}}
+            a: Наш сотрудник свяжется с вами и уточнит время.
+        elseif: 
+            a: Для записи на ТО уточните, пожалуйста, ваши ФИО, номер телефона и марку автомобиля.
+            go!: /SignToСlarification
+                
+        state: SignToСlarification
+            q: *
+            script: 
+            
+
+
+
         
     state: Match
         event!: match
