@@ -23,6 +23,28 @@
     }
   },
   "intents" : [ {
+    "path" : "/priceTo",
+    "enabled" : true,
+    "shared" : false,
+    "phrases" : [ {
+      "text" : "сколько стоит техобслуживание после первого года"
+    }, {
+      "text" : "сколько стоит ТО"
+    }, {
+      "text" : "а дорогое выйдет тео?"
+    }, {
+      "text" : "а дорогое ТО?"
+    }, {
+      "text" : "а дорогое техобслуживание?"
+    }, {
+      "text" : "прайс на ТО"
+    } ],
+    "classificationRules" : {
+      "refs" : [ ]
+    },
+    "patterns" : [ ],
+    "priority" : 0
+  }, {
     "path" : "/пока",
     "enabled" : true,
     "shared" : false,
