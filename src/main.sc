@@ -29,7 +29,7 @@ theme: /
 
     state: PriceTO
         intent!: /priceTo
-        a: Стоимость обслуживания можно рассчитать [тут](http://someautodealer/techservice#calculate)
+        a: Стоимость обслуживания можно рассчитать (тут)[http://someautodealer/techservice#calculate]
 
         
         
