@@ -55,9 +55,10 @@ theme: /
             a: Для записи на ТО уточните, пожалуйста, номер телефона.
                 
         state: SignToСlarification
-            q: * @duckling.phone-number *
+            q: $regexp<(8|\+?7)-?\(?9\d{2}\)?-?\d{3}-?\d{2}-?\d{2}>
             script: 
-                $.session.phone = $parseTree._duckling.phone-number
+                var $session = $jsapi.context().session;
+                $session.phone = $parseTree._duckling.phone-number
             a: Номер {{$parseTree._duckling.phone-number}}
             
         
