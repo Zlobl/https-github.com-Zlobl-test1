@@ -1,5 +1,11 @@
 require: slotfilling/slotFilling.sc
   module = sys.zb-common
+
+require: patterns.sc
+  module = sys.zb-common  
+
+require:  function.js
+
 init:
     
   $global.$ = {
@@ -63,9 +69,12 @@ theme: /
             a: Для записи на ТО уточните, пожалуйста, номер телефона.
                 
         state: SignToСlarification
-            q: $regexp<(8|\+?7)-?\(?9\d{2}\)?-?\d{3}-?\d{2}-?\d{2}>
+            q: *$regexp<(8|\+?7)-?\(?9\d{2}\)?-?\d{3}-?\d{2}-?\d{2}>*
             script: 
+                # if ($parseTree._duckling.phone-number)
                 var $ = $jsapi.context();
+                $.session.phone = $request
+                $reactions.answer(JSON.stringify($session))
             a: Номер {{$session}}
             
         
