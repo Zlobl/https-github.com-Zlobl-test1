@@ -1,0 +1,61 @@
+{
+  "positions" : [ {
+    "id" : "/Start",
+    "x" : 290,
+    "y" : 673
+  }, {
+    "id" : "/Hello",
+    "x" : 290,
+    "y" : 1339
+  }, {
+    "id" : "/Bye",
+    "x" : 290,
+    "y" : 1984
+  }, {
+    "id" : "/NoMatch",
+    "x" : 290,
+    "y" : 2596
+  }, {
+    "id" : "/PriceTO",
+    "x" : 290,
+    "y" : 3240
+  }, {
+    "id" : "/ScheduleTO",
+    "x" : 290,
+    "y" : 3916
+  }, {
+    "id" : "/ClaimTO",
+    "x" : 290,
+    "y" : 4591
+  }, {
+    "id" : "/WhatTO",
+    "x" : 290,
+    "y" : 5301
+  }, {
+    "id" : "/SignUpTo",
+    "x" : 1070,
+    "y" : 5311
+  }, {
+    "id" : "/SignToClarification2",
+    "x" : 1070,
+    "y" : 7042
+  }, {
+    "id" : "/DeleteSession",
+    "x" : 290,
+    "y" : 5979
+  }, {
+    "id" : "/Match",
+    "x" : 290,
+    "y" : 6581
+  }, {
+    "id" : "/NewState",
+    "name" : "NewState",
+    "x" : 690,
+    "y" : 668
+  }, {
+    "id" : "/NewState_1",
+    "name" : "NewState_1",
+    "x" : 1110,
+    "y" : 869
+  } ]
+}

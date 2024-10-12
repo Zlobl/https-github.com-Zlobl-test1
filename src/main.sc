@@ -6,6 +6,11 @@ require: patterns.sc
 
 require:  function.js
 
+require: pattern.sc
+
+require: config.yaml
+    var = cars
+    
 init:
     
   $global.$ = {
@@ -49,7 +54,7 @@ theme: /
         intent!: /scheduleTo
         a: График технического обслуживания можно узнать [тут](http://someautodealer/techservice).    
         
-    state: СlaimTO
+    state: ClaimTO
         intent!: /claimTo
         a: [Позвоните моим коллегам](http://someautodealer/contacts), чтобы разобраться в ситуации.
  
@@ -62,34 +67,89 @@ theme: /
     state: SignUpTo
         intent!: /signUpTo
         if: ($session.phone && $session.name) || ($session.phone && $session.car)
-            a: Оформляю заявку на техобслуживание на следующие данные:
-            a: {{$session.name}}\n{{$session.phone}}\n{{$session.car}}
-            a: Наш сотрудник свяжется с вами и уточнит время.
+            a: Оформляю заявку на техобслуживание.
+            a: Наш сотрудник свяжется с вами по номеру "{{$session.phone}}" и уточнит время.
+            a: {{$session.car}} {{$session.name}}
+            script:
+                $integration.googleSheets.writeDataToLine(
+                    "db246158-4219-403f-8752-a15592516a64",
+                    "1qs5B8sxUDJNHQ3-0erjEz55O01UaBQs60obouIQB3Us",
+                    "clients",
+                    [$session.name, $session.car, $session.phone]
+                );
         else: 
-            a: Для записи на ТО уточните, пожалуйста, номер телефона.
+            a: Для записи на ТО уточните, пожалуйста, ваше имя, номер телефона и марку автомобиля.
                 
-        state: SignToСlarification
-            q: *$regexp<(8|\+?7)-?\(?9\d{2}\)?-?\d{3}-?\d{2}-?\d{2}>*
+        state: SignToClarification
+            q: $carEan
+            q: $carRus
+            q: *
             script: 
-                # if ($request.query.match)
-                var $ = $jsapi.context();
-                var phone = /(8|\+?7)-?\(?9\d{2}\)?-?\d{3}-?\d{2}-?\d{2}/g;
-                $.session.phone = $request.query.match(phone);
-                $reactions.answer(JSON.stringify($.session.phone))
-                $reactions.answer(JSON.stringify($jsapi.context().entities))
-                var list = _.map($jsapi.context().entities, function (i) { 
-                    if(i.pattern == "pymorphy.name") $.session.name = i.value;
-                    if(i.pattern == "duckling.phone-number") $.session.phone = i.value;
-                    return $.session.name && $.session.phone;
-                })
-                $reactions.answer(JSON.stringify(list)
-            a: {{$request.query}}
-            
+                var entities = $jsapi.context().entities
+                if (!$session.name){
+                    $.session.name = _.filter(entities, function(en) {
+                    return en.pattern == "pymorphy.name";
+                    }).map(function(en) {
+                    return en.value;
+                    });
+                    if (_.isEmpty($.session.name)) delete  $.session.name;
+                }
+                if (!$session.phone){
+                    $.session.phone = _.filter(entities, function(en) {
+                    return en.pattern == "duckling.phone-number";
+                    }).map(function(en) {
+                    return en.value;
+                    });
+                    if (_.isEmpty($.session.phone)) delete  $.session.phone;
+                }
+                if (!$session.car){
+                    var puttetn = $jsapi.context().nluResults.selected.debugInfo
+                    if (puttetn && puttetn.pattern && puttetn.effectivePattern && (puttetn.pattern == "$carEan" || puttetn.pattern == "$carRus")){
+                        $.session.car = puttetn.effectivePattern
+                        $reactions.answer(JSON.stringify($session.car))
+                    }
+                }
+            if: ($session.phone && $session.name) || ($session.phone && $session.car)
+                go!: /SignUpTo
+            else:
+                go!: /SignToClarification2
         
-
-
+        
+    state: SignToClarification2
+        script:
+            if ($.session.name && !$.session.phone && !$session.car){
+                $reactions.answer($.session.name + ", уточните номер телефона и марку автомобиля.");
+            }else if(!$.session.name && $.session.phone && !$session.car){
+                $reactions.answer("Уточните ваше имя и марку автомобиля.");
+            }else if(!$.session.name && !$.session.phone && $session.car){
+                $reactions.answer("Уточните ваше имя и номер телефона.");
+            }else if($.session.name && !$.session.phone && $session.car){
+                $reactions.answer("Для записи уточните ваш номер телефона.");
+            }else { $reactions.answer("Для записи на ТО уточните ваше имя, номер телефона и марку автомобиля."); }
+            $reactions.transition( {value: "/SignUpTo/SignToClarification", deferred: true} );
+            
+        # state: GoSignToClarification
+        #     q: *
+        #     go!: /SignUpTo/SignToClarification
+            
+            
+    state: DeleteSession
+        q!: deletesession
+        script:
+            $jsapi.stopSession();
 
         
     state: Match
         event!: match
         a: {{$context.intent.answer}}
+
+
+
+    # state:
+    #     q!: $test
+    #     q!: *
+        
+    #     script:
+    #         var text = "Денис, номер телефона 89965008843, машина Ксиоми"
+    #         $reactions.answer(JSON.stringify($jsapi.context().nluResults.selected.debugInfo))
+            
