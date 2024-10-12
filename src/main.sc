@@ -66,7 +66,7 @@ theme: /
             q: $regexp<(8|\+?7)-?\(?9\d{2}\)?-?\d{3}-?\d{2}-?\d{2}>
             script: 
                 var $ = $jsapi.context();
-                $.session.phone = $parseTree._duckling.phone-number
+                $session.phone = $parseTree._duckling.phone-number
             a: Номер {{$parseTree._duckling.phone-number}}
             
         
