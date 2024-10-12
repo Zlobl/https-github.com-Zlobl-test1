@@ -1,5 +1,13 @@
 require: slotfilling/slotFilling.sc
   module = sys.zb-common
+init:
+    
+  $global.$ = {
+        __noSuchProperty__: function(property) {
+            return $jsapi.context()[property];
+        }
+    };
+  
 theme: /
 
     state: Start
