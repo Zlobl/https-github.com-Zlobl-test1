@@ -51,14 +51,16 @@ theme: /
             a: Оформляю заявку на техобслуживание на следующие данные:
             a: {{$session.name}}\n{{$session.phone}}\n{{$session.car}}
             a: Наш сотрудник свяжется с вами и уточнит время.
-        elseif: 
-            a: Для записи на ТО уточните, пожалуйста, ваши ФИО, номер телефона и марку автомобиля.
-            go!: /SignToСlarification
+        else: 
+            a: Для записи на ТО уточните, пожалуйста, номер телефона.
                 
         state: SignToСlarification
-            q: *
+            q: * @duckling.phone-number *
             script: 
+                $.session.phone = $parseTree._duckling.phone-number
+            a: Номер {{$parseTree._duckling.phone-number}}
             
+        
 
 
 

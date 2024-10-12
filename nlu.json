@@ -68,6 +68,22 @@
       "refs" : [ ]
     },
     "priority" : 0
+  }, {
+    "path" : "/signUpTo",
+    "enabled" : true,
+    "shared" : false,
+    "phrases" : [ {
+      "text" : "запишите на ТО"
+    }, {
+      "text" : "записаться на ТО"
+    }, {
+      "text" : "запишите на техобслуживание"
+    } ],
+    "classificationRules" : {
+      "refs" : [ ]
+    },
+    "patterns" : [ ],
+    "priority" : 0
   } ],
   "entities" : [ ],
   "enabledSystemEntities" : [ "duckling.number", "duckling.time", "duckling.duration", "duckling.phone-number", "duckling.email", "duckling.url" ],
