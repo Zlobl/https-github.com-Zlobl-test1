@@ -86,7 +86,7 @@
     "priority" : 0
   } ],
   "entities" : [ ],
-  "enabledSystemEntities" : [ "duckling.number", "duckling.time", "duckling.duration", "duckling.phone-number", "duckling.email", "duckling.url" ],
+  "enabledSystemEntities" : [ "pymorphy.name", "duckling.number", "duckling.time", "duckling.duration", "duckling.phone-number", "duckling.email", "duckling.url" ],
   "spellerDictionary" : [ ],
   "systemEntities" : [ {
     "name" : "mystem.geo",
@@ -120,7 +120,7 @@
     "enabled" : false
   }, {
     "name" : "pymorphy.name",
-    "enabled" : false
+    "enabled" : true
   }, {
     "name" : "pymorphy.surn",
     "enabled" : false

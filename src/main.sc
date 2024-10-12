@@ -71,11 +71,19 @@ theme: /
         state: SignToСlarification
             q: *$regexp<(8|\+?7)-?\(?9\d{2}\)?-?\d{3}-?\d{2}-?\d{2}>*
             script: 
-                # if ($parseTree._duckling.phone-number)
+                # if ($request.query.match)
                 var $ = $jsapi.context();
-                $.session.phone = $request
-                $reactions.answer(JSON.stringify($session))
-            a: Номер {{$session}}
+                var phone = /(8|\+?7)-?\(?9\d{2}\)?-?\d{3}-?\d{2}-?\d{2}/g;
+                $.session.phone = $request.query.match(phone);
+                $reactions.answer(JSON.stringify($.session.phone))
+                $reactions.answer(JSON.stringify($jsapi.context().entities))
+                var list = _.map($jsapi.context().entities, function (i) { 
+                    if(i.pattern == "pymorphy.name") $.session.name = i.value;
+                    if(i.pattern == "duckling.phone-number") $.session.phone = i.value;
+                    return $.session.name && $.session.phone;
+                })
+                $reactions.answer(JSON.stringify(list)
+            a: {{$request.query}}
             
         
 
